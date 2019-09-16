@@ -15,12 +15,13 @@ type Props = {
   optionTextStyle?: any,
   titleStyle?: any,
   maxHeight?: number,
-  fixedTitles?: Array<string>
+  fixedTitles?: Array<string>,
+  initialSelection?: Array<number>,
 };
 
 type State = {
   activityIndex: number,
-  selectIndex: number,
+  selectIndex: Array<number>,
   rotationAnims: Array<any>
 };
 
@@ -28,9 +29,13 @@ class DropdownMenu extends Component<Props, State> {
   constructor(props, context) {
     super(props, context);
 
-    var selectIndex = new Array(this.props.data.length);
+    var selectIndex = new Array(props.data.length);
     for (var i = 0; i < selectIndex.length; i++) {
-      selectIndex[i] = 0;
+      if (props.initialSelection && props.initialSelection.length > i && props.data[i].length > props.initialSelection[i]) {
+        selectIndex[i] = props.initialSelection[i];
+      } else {
+        selectIndex[i] = 0;
+      }
     }
     this.state = {
       activityIndex: -1,
